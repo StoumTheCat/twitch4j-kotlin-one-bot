@@ -1,4 +1,4 @@
-package com.github.twitch4j.chatbot.kotlin.features
+package com.github.twitch4j.kotlin.one.bot.features
 
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.chat.events.channel.FollowEvent

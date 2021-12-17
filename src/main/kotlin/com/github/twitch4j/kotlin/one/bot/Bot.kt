@@ -1,4 +1,4 @@
-package com.github.twitch4j.chatbot.kotlin
+package com.github.twitch4j.kotlin.one.bot
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -6,10 +6,8 @@ import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
-import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnDonation
-import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnFollow
-import com.github.twitch4j.chatbot.kotlin.features.ChannelNotificationOnSubscription
-import com.github.twitch4j.chatbot.kotlin.features.WriteChannelChatToConsole
+import com.github.twitch4j.kotlin.one.bot.model.CommandAction
+import com.github.twitch4j.kotlin.one.bot.model.CommandWithResponseAction
 import kotlin.system.exitProcess
 
 object Bot {
@@ -24,10 +22,19 @@ object Bot {
     /** Register all features */
     fun registerFeatures() {
         val eventHandler = twitchClient.eventManager.getEventHandler(SimpleEventHandler::class.java)
-        WriteChannelChatToConsole(eventHandler)
+        CommandAction("test") {
+            println(it.message)
+        }
+        CommandAction("test2") {
+            println("this is test 2 ${it.message}")
+        }
+        CommandWithResponseAction("respond") {
+            "This is a response for your message ${it.message}"
+        }
+        /*WriteChannelChatToConsole(eventHandler)
         ChannelNotificationOnFollow(eventHandler)
         ChannelNotificationOnSubscription(eventHandler)
-        ChannelNotificationOnDonation(eventHandler)
+        ChannelNotificationOnDonation(eventHandler)*/
     }
 
     /** Start the bot, connecting it to every channel specified in the configuration */
@@ -58,7 +65,6 @@ object Bot {
     /** Create the client */
     private fun createClient(): TwitchClient {
         var clientBuilder = TwitchClientBuilder.builder()
-        val client: TwitchClient
 
         //region Chat related configuration
         val credential = OAuth2Credential(
@@ -91,9 +97,8 @@ object Bot {
         //endregion
 
         // Build the client out of the configured builder
-        client = clientBuilder.build()
 
-        return client
+        return clientBuilder.build()
     }
 
 }

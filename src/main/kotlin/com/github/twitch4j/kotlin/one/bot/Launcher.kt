@@ -1,4 +1,4 @@
-package com.github.twitch4j.chatbot.kotlin
+package com.github.twitch4j.kotlin.one.bot
 
 fun main() {
     val bot = Bot
