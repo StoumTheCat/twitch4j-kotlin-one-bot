@@ -79,10 +79,11 @@ abstract class AbstractChatAction {
         val twitchChat: TwitchChat = twitchClient.chat
     }
 
-    private fun onChannelMessage(event: ChannelMessageEvent) {
-        if (getFilter(event)) getAction().invoke(event)
+    public fun onChannelMessage(event: ChannelMessageEvent) {
+        if (checkPermissions(event) && getFilter(event)) getAction().invoke(event)
     }
 
     protected abstract fun getAction(): (ChannelMessageEvent) -> Any
     protected open fun getFilter(event: ChannelMessageEvent): Boolean = true
+    protected open fun checkPermissions(event: ChannelMessageEvent): Boolean = true
 }

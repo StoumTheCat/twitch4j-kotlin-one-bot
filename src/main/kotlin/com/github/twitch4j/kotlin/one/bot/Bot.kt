@@ -8,6 +8,7 @@ import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.kotlin.one.bot.model.CommandAction
 import com.github.twitch4j.kotlin.one.bot.model.CommandWithResponseAction
+import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels
 import kotlin.system.exitProcess
 
 object Bot {
@@ -22,7 +23,7 @@ object Bot {
     /** Register all features */
     fun registerFeatures() {
         val eventHandler = twitchClient.eventManager.getEventHandler(SimpleEventHandler::class.java)
-        CommandAction("test") {
+        CommandAction("test", listOf(PermissionLevels.BROADCASTER)) {
             println(it.message)
         }
         CommandAction("test2") {
