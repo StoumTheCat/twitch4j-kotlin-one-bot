@@ -11,7 +11,7 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
 import com.github.twitch4j.kotlin.one.bot.Configuration
 import kotlin.system.exitProcess
 
-abstract class AbstractChatAction {
+abstract class AbstractChatAction(override val description: String) : ChatAction {
     init {
         eventHandler.onEvent(ChannelMessageEvent::class.java) { this.onChannelMessage(it) }
     }
@@ -79,11 +79,12 @@ abstract class AbstractChatAction {
         val twitchChat: TwitchChat = twitchClient.chat
     }
 
-    public fun onChannelMessage(event: ChannelMessageEvent) {
-        if (checkPermissions(event) && getFilter(event)) getAction().invoke(event)
+    override var enabled: Boolean = true
+
+    override fun onChannelMessage(event: ChannelMessageEvent) {
+        if (enabled && checkPermissions(event) && getFilter(event)) getAction().invoke(event)
     }
 
-    protected abstract fun getAction(): (ChannelMessageEvent) -> Any
-    protected open fun getFilter(event: ChannelMessageEvent): Boolean = true
-    protected open fun checkPermissions(event: ChannelMessageEvent): Boolean = true
+    override fun getFilter(event: ChannelMessageEvent): Boolean = true
+    override fun checkPermissions(event: ChannelMessageEvent): Boolean = true
 }
