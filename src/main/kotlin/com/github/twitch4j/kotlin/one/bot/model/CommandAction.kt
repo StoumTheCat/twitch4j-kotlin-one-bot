@@ -1,6 +1,7 @@
 package com.github.twitch4j.kotlin.one.bot.model
 
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
+import com.github.twitch4j.kotlin.one.bot.command
 import com.github.twitch4j.kotlin.one.bot.model.permissions.Permission
 import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels.EVERYONE
 
@@ -12,7 +13,12 @@ open class CommandAction(
     private val executable: (ChannelMessageEvent) -> Any
 ) : AbstractPermissibleChatAction(permissions, description) {
     init {
-        ActionCatalogue.actions[command] = this
+        CommandCatalogue.commands[command] = this
+    }
+
+    override fun dispose() {
+        super.dispose()
+        CommandCatalogue.commands.remove(command)
     }
 
     override fun getAction(): (ChannelMessageEvent) -> Any {
@@ -21,6 +27,6 @@ open class CommandAction(
 
     override fun getFilter(event: ChannelMessageEvent): Boolean =
         super.getFilter(event)
-                && event.message.startsWith("!${command}")
+                && event.command == "$command"
 
 }

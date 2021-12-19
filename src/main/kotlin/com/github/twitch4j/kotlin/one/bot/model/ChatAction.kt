@@ -5,6 +5,9 @@ import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
 interface ChatAction {
     var enabled: Boolean
     val description: String
+
+    fun dispose()
+
     fun disable() {
         enabled = false
     }

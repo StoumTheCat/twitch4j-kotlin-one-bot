@@ -3,12 +3,12 @@ package com.github.twitch4j.kotlin.one.bot
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
-import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
 import com.github.twitch4j.kotlin.one.bot.model.ChatAction
 import com.github.twitch4j.kotlin.one.bot.model.CommandAction
 import com.github.twitch4j.kotlin.one.bot.model.CommandWithResponseAction
+import com.github.twitch4j.kotlin.one.bot.model.actions.AddCommandAction
 import com.github.twitch4j.kotlin.one.bot.model.actions.CommandsListAction
 import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels
 import kotlin.system.exitProcess
@@ -24,7 +24,8 @@ object Bot {
 
     /** Register all features */
     fun registerFeatures() {
-        val eventHandler = twitchClient.eventManager.getEventHandler(SimpleEventHandler::class.java)
+        CommandsListAction
+        AddCommandAction
         val test = CommandAction("test", listOf(PermissionLevels.BROADCASTER)) {
             println(it.message)
         }
@@ -35,7 +36,7 @@ object Bot {
             "This is a response for your message ${it.message}"
         }
         println(test.description)
-        CommandsListAction
+
         /*WriteChannelChatToConsole(eventHandler)
         ChannelNotificationOnFollow(eventHandler)
         ChannelNotificationOnSubscription(eventHandler)

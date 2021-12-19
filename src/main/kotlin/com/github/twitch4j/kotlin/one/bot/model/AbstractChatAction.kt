@@ -3,6 +3,7 @@ package com.github.twitch4j.kotlin.one.bot.model
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
+import com.github.philippheuer.events4j.api.domain.IDisposable
 import com.github.philippheuer.events4j.simple.SimpleEventHandler
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
@@ -12,8 +13,9 @@ import com.github.twitch4j.kotlin.one.bot.Configuration
 import kotlin.system.exitProcess
 
 abstract class AbstractChatAction(override val description: String) : ChatAction {
+    private val disposable: IDisposable
     init {
-        eventHandler.onEvent(ChannelMessageEvent::class.java) { this.onChannelMessage(it) }
+        disposable = eventHandler.onEvent(ChannelMessageEvent::class.java) { this.onChannelMessage(it) }
     }
 
     protected companion object {
@@ -80,6 +82,9 @@ abstract class AbstractChatAction(override val description: String) : ChatAction
     }
 
     override var enabled: Boolean = true
+    override fun dispose() {
+        disposable.dispose()
+    }
 
     override fun onChannelMessage(event: ChannelMessageEvent) {
         if (enabled && checkPermissions(event) && getFilter(event)) getAction().invoke(event)
