@@ -18,7 +18,7 @@ interface ChatAction {
 
     fun onChannelMessage(event: ChannelMessageEvent)
     fun getAction(): (ChannelMessageEvent) -> Any
-    open fun getFilter(event: ChannelMessageEvent): Boolean
+    fun getFilter(event: ChannelMessageEvent): Boolean
 
-    open fun checkPermissions(event: ChannelMessageEvent): Boolean
+    fun checkPermissions(event: ChannelMessageEvent): Boolean
 }
