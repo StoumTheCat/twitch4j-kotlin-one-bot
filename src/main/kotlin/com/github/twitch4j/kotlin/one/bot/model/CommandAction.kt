@@ -16,6 +16,8 @@ open class CommandAction(
         CommandCatalogue.commands[command] = this
     }
 
+    var aliases: MutableList<String> = mutableListOf()
+
     override fun dispose() {
         super.dispose()
         CommandCatalogue.commands.remove(command)
@@ -27,6 +29,6 @@ open class CommandAction(
 
     override fun getFilter(event: ChannelMessageEvent): Boolean =
         super.getFilter(event)
-                && event.command == "$command"
+                && (event.command == command || aliases.any { event.command == it })
 
 }

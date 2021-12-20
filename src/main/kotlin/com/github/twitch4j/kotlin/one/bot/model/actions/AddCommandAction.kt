@@ -16,4 +16,8 @@ object AddCommandAction : CommandWithResponseAction(
         CommandWithResponseAction(command = args[0], description = args[1], response = { args[2] })
         return "Command !${args[0]} has been added, check with !commands"
     }
-)
+) {
+    init {
+        aliases.add("addc")
+    }
+}

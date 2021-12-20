@@ -7,4 +7,8 @@ object CommandsListAction : CommandWithResponseAction(
     "commands",
     description = "Shows list of commands",
     response = { CommandCatalogue.getCommandsListForTwitch() }
-)
+) {
+    init {
+        aliases.add("c")
+    }
+}
