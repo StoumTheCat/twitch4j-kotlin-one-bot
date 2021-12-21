@@ -1,4 +1,4 @@
-package com.github.twitch4j.kotlin.one.bot.model
+package com.github.twitch4j.kotlin.one.bot.features.model
 
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
 

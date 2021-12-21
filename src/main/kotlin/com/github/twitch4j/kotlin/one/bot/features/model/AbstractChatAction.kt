@@ -1,4 +1,4 @@
-package com.github.twitch4j.kotlin.one.bot.model
+package com.github.twitch4j.kotlin.one.bot.features.model
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory

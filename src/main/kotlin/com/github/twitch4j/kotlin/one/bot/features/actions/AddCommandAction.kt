@@ -1,10 +1,10 @@
-package com.github.twitch4j.kotlin.one.bot.model.actions
+package com.github.twitch4j.kotlin.one.bot.features.actions
 
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
+import com.github.twitch4j.kotlin.one.bot.features.model.CommandCatalogue
+import com.github.twitch4j.kotlin.one.bot.features.model.CommandWithResponseAction
+import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevels.BROADCASTER
 import com.github.twitch4j.kotlin.one.bot.messageArguments
-import com.github.twitch4j.kotlin.one.bot.model.CommandCatalogue
-import com.github.twitch4j.kotlin.one.bot.model.CommandWithResponseAction
-import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels.BROADCASTER
 
 object AddCommandAction : CommandWithResponseAction(
     "addcommand",

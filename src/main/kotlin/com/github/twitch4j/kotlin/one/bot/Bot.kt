@@ -5,12 +5,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
-import com.github.twitch4j.kotlin.one.bot.model.ChatAction
-import com.github.twitch4j.kotlin.one.bot.model.CommandAction
-import com.github.twitch4j.kotlin.one.bot.model.CommandWithResponseAction
-import com.github.twitch4j.kotlin.one.bot.model.actions.AddCommandAction
-import com.github.twitch4j.kotlin.one.bot.model.actions.CommandsListAction
-import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels
+import com.github.twitch4j.kotlin.one.bot.features.actions.AddCommandAction
+import com.github.twitch4j.kotlin.one.bot.features.actions.CommandsListAction
+import com.github.twitch4j.kotlin.one.bot.features.model.ChatAction
+import com.github.twitch4j.kotlin.one.bot.features.model.CommandAction
+import com.github.twitch4j.kotlin.one.bot.features.model.CommandWithResponseAction
+import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevels
 import kotlin.system.exitProcess
 
 object Bot {

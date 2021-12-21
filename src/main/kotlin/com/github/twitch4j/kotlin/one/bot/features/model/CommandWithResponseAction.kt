@@ -1,8 +1,8 @@
-package com.github.twitch4j.kotlin.one.bot.model
+package com.github.twitch4j.kotlin.one.bot.features.model
 
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
-import com.github.twitch4j.kotlin.one.bot.model.permissions.Permission
-import com.github.twitch4j.kotlin.one.bot.model.permissions.PermissionLevels.EVERYONE
+import com.github.twitch4j.kotlin.one.bot.features.model.permissions.Permission
+import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevels.EVERYONE
 
 open class CommandWithResponseAction(
     command: String,

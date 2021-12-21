@@ -1,0 +1,152 @@
+body {
+    margin: 0;
+    line-height: 0;
+    font-family: Andale Mono, monospace;
+    line-height: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+body.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.player {
+    margin: 0 0.625%;
+    width: 8.6%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -17px 0 15px -17px rgba(0, 0, 0, .8), 17px 0 15px -17px rgba(0, 0, 0, .8), 0 0 30px rgba(0, 0, 0, .1) inset, 0 2px 0 rgba(250, 170, 0, 1);
+    transition: margin-top 1.5s, box-shadow 1.5s;
+}
+
+.speaker {
+    box-shadow: 0 2px 15px rgba(85, 153, 255, 0.9), 0 2px 7px rgba(17, 0, 255, 0.527);
+}
+
+.player.dead {
+    margin-top: 1.5%;
+}
+
+.photo {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    box-shadow: 0px -70px 25px -40px rgba(0, 0, 0, 0.8) inset, 0px -100px 50px -40px rgba(0, 0, 0, 0.5) inset;
+    transition: all 1s;
+}
+
+.dead .photo {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+.status {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+.dead .status {
+    visibility: visible;
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+}
+
+.killed .status {
+    background-image: url("../content/icon/killed.png");
+}
+
+.voted .status {
+    background-image: url("../content/icon/voted.png");
+}
+
+.deleted .status {
+    background-image: url("../content/icon/deleted.png");
+}
+
+.role {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+.show-roles .sheriff .role {
+    visibility: visible;
+    opacity: 1;
+    background-color: rgba(250, 170, 0, 0.8);
+    background-image: url("../content/icon/loupe.png");
+}
+
+.show-roles .don .role {
+    visibility: visible;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url("../content/icon/hat.png");
+}
+
+.show-roles .mafia .role {
+    visibility: visible;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url("../content/icon/gun.png");
+}
+
+.number {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 50%;
+    color: #000;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.nick {
+    position: absolute;
+    left: 37px;
+    bottom: 10px;
+    color: #fff;
+    font-size: 18px;
+}
