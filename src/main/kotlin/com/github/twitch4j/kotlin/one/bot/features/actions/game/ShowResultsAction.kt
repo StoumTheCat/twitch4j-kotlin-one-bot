@@ -9,7 +9,7 @@ object ShowResultsAction : CommandWithResponseAction(
     "results",
     description = "!players !p !игроки !состав !баллы !б - показать состав и результаты",
     response = fun(_: ChannelMessageEvent): String {
-        return TournamentInfo.getResults().map { "${it.name} - ${it.points}" }.twitchList
+        return TournamentInfo.getResultLines().twitchList
     }
 ) {
     init {

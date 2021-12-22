@@ -13,7 +13,7 @@ object SetTableAction : CommandWithResponseAction(
     permissions = listOf(MODERATOR),
     description = "!стол List players by nickname with space delimiter",
     response = fun(event: ChannelMessageEvent): String {
-        val players = event.getMessageArguments("""\s*""")
+        val players = event.getMessageArguments("""\s+""")
         //todo refactor this abominable htonь
         with(players.map { it.toLowerCase() }) {
             if (TournamentInfo.players.values.map { it.name.toLowerCase() }.diff(this).isNotEmpty()) {

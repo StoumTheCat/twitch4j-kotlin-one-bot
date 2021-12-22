@@ -9,6 +9,7 @@ object TournamentInfo {
         var currentSlot: Int = 0
         var currentRole: Role = Role.RED
         var points: Double = 0.0
+        var firstDead: Int = 0
 
         fun reset() {
             currentTable = 0
@@ -24,7 +25,11 @@ object TournamentInfo {
     }
 
     fun getResults(): List<Player> {
-        return players.values.sortedBy { it.points }
+        return players.values.sortedByDescending { it.points }
+    }
+
+    fun getResultLines(): List<String> {
+        return getResults().withIndex().map { "${it.index + 1}. ${it.value.name} - ${it.value.points}" }
     }
 
     fun getActiveRoles(tableNumber: Int = 0): List<Player> {
@@ -32,7 +37,8 @@ object TournamentInfo {
     }
 
     fun resolveRound(winner: String, firstDead: Int, bestMove: List<Int>, table: Int = 0) {
-        with(getCurrentTable(table)[firstDead]) {
+        with(getCurrentTable(table)[firstDead - 1]) {
+            this.firstDead++
             when (getCurrentTable(table)
                 .filter { it.currentRole.team == "BLACK" }
                 .filter { bestMove.contains(it.currentSlot) }.size) {
@@ -41,11 +47,12 @@ object TournamentInfo {
             }
         }
         getCurrentTable(table).forEach { player ->
-            if (player.currentRole.team == winner) {
+            if (player.currentRole.team.equals(winner, ignoreCase = true)) {
                 player.points++
             }
             player.reset()
         }
+        currentGame++
     }
 
 }

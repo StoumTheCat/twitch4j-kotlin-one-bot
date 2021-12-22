@@ -12,7 +12,7 @@ object AddPlayersAction : CommandWithResponseAction(
     description = "Add players with space delimiter",
     permissions = listOf(BROADCASTER),
     response = fun(event: ChannelMessageEvent): String {
-        val players = event.getMessageArguments("""\s*""")
+        val players = event.getMessageArguments("""\s+""")
         TournamentInfo.players.clear()
         TournamentInfo.players.putAll(players.associateWith { Player(it) }.toMutableMap())
         return "Current players recorded, list with !players|!p|!игроки|!состав|!баллы"

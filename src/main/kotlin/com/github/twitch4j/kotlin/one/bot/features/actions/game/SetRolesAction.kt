@@ -13,9 +13,9 @@ object SetRolesAction : CommandWithResponseAction(
     permissions = listOf(MODERATOR),
     description = "!роли - List slots starting with sherif, mark don with *",
     response = fun(event: ChannelMessageEvent): String {
-        val roleBySlot = event.getMessageArguments("""\s*""")
+        val roleBySlot = event.getMessageArguments("""\s+""")
         with(TournamentInfo.getCurrentTable()) {
-            this[roleBySlot[0].toInt()].currentRole = Role.STAR
+            this[roleBySlot[0].toInt() - 1].currentRole = Role.STAR
             roleBySlot.drop(1).forEach {
                 if (it.startsWith("*"))
                     this[it.drop(1).toInt()].currentRole = Role.HAT
