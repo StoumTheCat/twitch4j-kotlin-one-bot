@@ -5,12 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential
 import com.github.twitch4j.TwitchClient
 import com.github.twitch4j.TwitchClientBuilder
-import com.github.twitch4j.kotlin.one.bot.features.actions.AddCommandAction
-import com.github.twitch4j.kotlin.one.bot.features.actions.CommandsListAction
-import com.github.twitch4j.kotlin.one.bot.features.model.ChatAction
-import com.github.twitch4j.kotlin.one.bot.features.model.CommandAction
-import com.github.twitch4j.kotlin.one.bot.features.model.CommandWithResponseAction
-import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevels
+import com.github.twitch4j.kotlin.one.bot.features.Features
 import kotlin.system.exitProcess
 
 object Bot {
@@ -24,23 +19,7 @@ object Bot {
 
     /** Register all features */
     fun registerFeatures() {
-        CommandsListAction
-        AddCommandAction
-        val test = CommandAction("test", listOf(PermissionLevels.BROADCASTER)) {
-            println(it.message)
-        }
-        val test2: ChatAction = CommandAction("test2") {
-            println("this is test 2 ${it.message}")
-        }
-        val respond: ChatAction = CommandWithResponseAction("respond") {
-            "This is a response for your message ${it.message}"
-        }
-        println(test.description)
-
-        /*WriteChannelChatToConsole(eventHandler)
-        ChannelNotificationOnFollow(eventHandler)
-        ChannelNotificationOnSubscription(eventHandler)
-        ChannelNotificationOnDonation(eventHandler)*/
+        Features
     }
 
     /** Start the bot, connecting it to every channel specified in the configuration */
