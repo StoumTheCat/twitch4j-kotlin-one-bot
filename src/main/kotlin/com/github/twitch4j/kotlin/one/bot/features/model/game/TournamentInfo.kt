@@ -1,5 +1,7 @@
 package com.github.twitch4j.kotlin.one.bot.features.model.game
 
+import kotlin.math.roundToInt
+
 object TournamentInfo {
     var numberOfGames = 10
     var currentGame = 1
@@ -10,6 +12,14 @@ object TournamentInfo {
         var currentRole: Role = Role.RED
         var points: Double = 0.0
         var firstDead: Int = 0
+        var firstDeadLoss: Int = 0
+        var ciPoints: Double = 0.0
+
+        fun recalculateCI(gamesCount: Int) {
+            val b = gamesCount.times(0.4).roundToInt()
+            val ci = if (firstDead <= b) firstDead * 0.4 / b else 0.4
+            ciPoints = ci * firstDeadLoss
+        }
 
         fun reset() {
             currentTable = 0
@@ -25,11 +35,12 @@ object TournamentInfo {
     }
 
     fun getResults(): List<Player> {
-        return players.values.sortedByDescending { it.points }
+        return players.values.sortedByDescending { it.points + it.ciPoints }
     }
 
     fun getResultLines(): List<String> {
-        return getResults().withIndex().map { "${it.index + 1}. ${it.value.name} - ${it.value.points}" }
+        return getResults().withIndex()
+            .map { "${it.index + 1}. ${it.value.name} - ${it.value.points + it.value.ciPoints}" }
     }
 
     fun getActiveRoles(tableNumber: Int = 0): List<Player> {
@@ -39,9 +50,17 @@ object TournamentInfo {
     fun resolveRound(winner: String, firstDead: Int, bestMove: List<Int>, table: Int = 0) {
         with(getCurrentTable(table)[firstDead - 1]) {
             this.firstDead++
-            when (getCurrentTable(table)
-                .filter { it.currentRole.team == "BLACK" }
-                .filter { bestMove.contains(it.currentSlot) }.size) {
+            if (this.currentRole.team.equals(Role.RED.team, ignoreCase = true)) {
+                if (winner.equals(Role.BLACK.team, ignoreCase = true)) {
+                    this.firstDeadLoss++
+                }
+            }
+            this.recalculateCI(numberOfGames)
+            when (
+                getCurrentTable(table)
+                    .filter { it.currentRole.team == "BLACK" }
+                    .filter { bestMove.contains(it.currentSlot) }.size
+            ) {
                 2 -> this.points += 0.25
                 3 -> this.points += 0.4
             }

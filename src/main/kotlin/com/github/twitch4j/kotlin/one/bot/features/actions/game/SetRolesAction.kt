@@ -18,9 +18,9 @@ object SetRolesAction : CommandWithResponseAction(
             this[roleBySlot[0].toInt() - 1].currentRole = Role.STAR
             roleBySlot.drop(1).forEach {
                 if (it.startsWith("*"))
-                    this[it.drop(1).toInt()].currentRole = Role.HAT
+                    this[it.drop(1).toInt() - 1].currentRole = Role.HAT
                 else
-                    this[it.toInt()].currentRole = Role.BLACK
+                    this[it.toInt() - 1].currentRole = Role.BLACK
             }
         }
         return "Roles has been recorded:\n ${
