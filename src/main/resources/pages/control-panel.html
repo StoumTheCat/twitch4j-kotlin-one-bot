@@ -418,6 +418,21 @@
                     sendAllData()
                     break
                 }
+                case "!setroles": {
+                    clearRole()
+                    rolesList = event.data.split(' ').slice(1);
+                    sheriffDivElement = document.querySelector(`.player#player_${rolesList[0]} td.sheriff-button div`)
+                    changeRole(sheriffDivElement, 'sheriff')
+                    rolesList.slice(1).forEach(slot => {
+                        if (slot.toString().startsWith("*")) {
+                            donDivElement = document.querySelector(`.player#player_${slot.toString().slice(1)} td.don-button div`)
+                            changeRole(donDivElement, 'don')
+                        } else {
+                            mafiaDivElement = document.querySelector(`.player#player_${slot.toString()} td.mafia-button div`)
+                            changeRole(mafiaDivElement, 'mafia')
+                        }
+                    })
+                }
             }
         }
     });

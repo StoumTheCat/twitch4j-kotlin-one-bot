@@ -30,6 +30,10 @@ object TournamentInfo {
 
     val players: MutableMap<String, Player> = mutableMapOf()
 
+    fun resetRoles() {
+        players.values.forEach { it.currentRole = Role.RED }
+    }
+
     fun getCurrentTable(tableNumber: Int = 0): Array<Player> {
         return players.values.filter { it.currentTable == tableNumber }.sortedBy { it.currentSlot }.toTypedArray()
     }
