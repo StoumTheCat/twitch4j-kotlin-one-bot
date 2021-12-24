@@ -391,20 +391,46 @@
 
 </footer>
 <script>
-    data = "Анкада|Артурро|Бомбануло|Верона|КК|Онурис|Сурочек|Фокс|Шелдон|Sin3d";
-    player_list = data.split('|');
-
-    const ps = new BroadcastChannel('panel_status');
-    const pl = new BroadcastChannel('player_list');
-    const cl = new BroadcastChannel('class_list');
-
-    $(document).ready(function () {
-        document.querySelectorAll('.player-list').forEach((element, index, array) => {
-            player_list.forEach(player => {
-                element.add(new Option(player));
-            });
-        });
+    const socket = new WebSocket('ws://localhost:8080/gameinfo');
+    socket.addEventListener('open', function (event) {
+        socket.send('register control-panel');
+        console.log("Connected to gameinfo WS")
     });
+    socket.addEventListener("message", function (event) {
+        console.log('Message from server ', event.data);
+        if (event.data.toString().startsWith("!")) {
+            let split = event.data.toString().split(" ")
+            switch (split[0]) {
+                case "!addplayers": {
+                    player_list = event.data.split(' ').slice(1);
+                    document.querySelectorAll('.player-list').forEach((element, index, array) => {
+                        player_list.forEach(player => {
+                            element.add(new Option(player, player));
+                        });
+                    });
+                    break
+                }
+                case "!settable": {
+                    player_list = event.data.split(' ').slice(1);
+                    document.querySelectorAll('.player-list').forEach((element, index, array) => {
+                        element.querySelector(`[value=${player_list[index]}]`).selected = 'selected'
+                    });
+                    sendAllData()
+                    break
+                }
+            }
+        }
+    });
+    data = "Анкада|Артурро|Бомбануло|Верона|КК|Онурис|Сурочек|Фокс|Шелдон|Sin3d";
+
+
+    const panelStatusChannel = new BroadcastChannel('panel_status');
+    const playerRoleChannel = new BroadcastChannel('player_list');
+    const playerStatusChannel = new BroadcastChannel('class_list');
+
+    /*$(document).ready(function () {
+
+    });*/
 
     function changeStatus(object, status) {
         element = object.parentElement.parentElement;
@@ -422,7 +448,7 @@
             element.classList.add(status);
         }
         classes = element.id + '|' + element.classList.value;
-        cl.postMessage(classes);
+        playerStatusChannel.postMessage(classes);
     }
 
     function changeRole(object, role) {
@@ -436,7 +462,7 @@
             element.classList.add(role);
         }
         classes = element.id + '|' + element.classList.value;
-        cl.postMessage(classes);
+        playerStatusChannel.postMessage(classes);
     }
 
     function changeSpeaker(object) {
@@ -447,13 +473,13 @@
             document.querySelectorAll('.player').forEach((item, index, array) => {
                 if (item.classList.contains('speaker')) {
                     item.classList.remove('speaker');
-                    cl.postMessage(item.id + '|' + item.classList.value);
+                    playerStatusChannel.postMessage(item.id + '|' + item.classList.value);
                 }
             });
             element.classList.add('speaker')
         }
         classes = element.id + '|' + element.classList.value;
-        cl.postMessage(classes);
+        playerStatusChannel.postMessage(classes);
     }
 
     function clearStatus() {
@@ -471,7 +497,7 @@
         });
         document.querySelectorAll('.player').forEach((element, index, array) => {
             player = element.id + '|' + element.classList.value;
-            cl.postMessage(player);
+            playerStatusChannel.postMessage(player);
         });
     }
 
@@ -487,15 +513,15 @@
         });
         document.querySelectorAll('.player').forEach((element, index, array) => {
             player = element.id + '|' + element.classList.value;
-            cl.postMessage(player);
+            playerStatusChannel.postMessage(player);
         });
     }
 
     $('#button-panel').click(function () {
         if ($('#button-panel').find('.checkbox')[0].checked) {
-            ps.postMessage('body|visible');
+            panelStatusChannel.postMessage('body|visible');
         } else {
-            ps.postMessage('body|');
+            panelStatusChannel.postMessage('body|');
         }
 
     });
@@ -503,16 +529,16 @@
 
     $('#button-roles').click(function () {
         if ($('#button-roles').find('.checkbox')[0].checked) {
-            ps.postMessage('footer|show-roles');
+            panelStatusChannel.postMessage('footer|show-roles');
         } else {
-            ps.postMessage('footer|');
+            panelStatusChannel.postMessage('footer|');
         }
 
     });
 
     $('select').on('change', function () {
         player = $(this).parents('.player')[0].id + '|' + $(this).find(":selected").val();
-        pl.postMessage(player);
+        playerRoleChannel.postMessage(player);
     });
 
     $('.binding').bind('keypress', function (e) {
@@ -535,7 +561,7 @@
             item = element.querySelectorAll('.player-list')[0];
             player = element.id + '|' + $(item[item.selectedIndex]).text();
 
-            pl.postMessage(player);
+            playerRoleChannel.postMessage(player);
         });
     }
 </script>

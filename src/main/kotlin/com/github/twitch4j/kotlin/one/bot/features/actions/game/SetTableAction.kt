@@ -6,7 +6,10 @@ import com.github.twitch4j.kotlin.one.bot.features.model.CommandWithResponseActi
 import com.github.twitch4j.kotlin.one.bot.features.model.game.TournamentInfo
 import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevel.MODERATOR
 import com.github.twitch4j.kotlin.one.bot.getMessageArguments
+import com.github.twitch4j.kotlin.one.bot.ktor.server.Application
 import com.github.twitch4j.kotlin.one.bot.twitchList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 object SetTableAction : CommandWithResponseAction(
     "settable",
@@ -23,6 +26,11 @@ object SetTableAction : CommandWithResponseAction(
             }
 
             players.withIndex().forEach { TournamentInfo.players[it.value]?.currentSlot = it.index + 1 }
+            runBlocking {
+                launch {
+                    Application.send("control-panel", event.message)
+                }
+            }
             return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }.twitchList
         }
     }

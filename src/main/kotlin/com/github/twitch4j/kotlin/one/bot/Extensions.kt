@@ -2,6 +2,12 @@ package com.github.twitch4j.kotlin.one.bot
 
 import com.github.twitch4j.chat.TwitchChat
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
+import io.ktor.http.content.*
+import io.ktor.routing.*
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import kotlin.streams.toList
 
 val twitchListDelimiter: String = "⠤".repeat(30)
 const val twitchMessageLimit = 500
@@ -45,3 +51,15 @@ fun ChannelMessageEvent.getMessageArguments(delimiter: String = """\s*\|\s*"""):
 val ChannelMessageEvent.command: String?
     get() = if (this.message.startsWith("!")) this.message.substringBefore(" ").removePrefix("!")
     else null
+
+val Path.withoutExtension: String
+    get() = this.toString().substringBefore(".")
+
+fun Route.resourcesWithoutExtension(remotePath: String, resourcesPackage: String) {
+    val projectDirAbsolutePath = Paths.get("").toAbsolutePath().toString()
+    val resourcesPath = Paths.get(projectDirAbsolutePath, "/src/main/resources/${resourcesPackage}/")
+    val paths = Files.walk(resourcesPath).toList()
+    paths.drop(1).forEach {
+        resource("${remotePath}${it.fileName.withoutExtension}", "${it.parent.fileName}/${it.fileName}")
+    }
+}

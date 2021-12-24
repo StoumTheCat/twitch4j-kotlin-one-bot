@@ -1,10 +1,11 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.2'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
 }
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -19,7 +20,16 @@ dependencies {
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.0"
 
     // Logging
-    compile "ch.qos.logback:logback-classic:1.2.3"
+    compile 'ch.qos.logback:logback-classic:1.2.9'
+
+    //Ktor
+    compile "io.ktor:ktor-server-core:1.6.7"
+    compile "io.ktor:ktor-server-netty:1.6.7"
+
+    implementation "io.ktor:ktor-websockets:1.6.7"
+    implementation "io.ktor:ktor-client-websockets:1.6.7"
+    implementation "io.ktor:ktor-client-cio:1.6.7"
+
 }
 
 compileKotlin {
