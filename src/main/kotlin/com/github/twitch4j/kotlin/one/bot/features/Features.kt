@@ -14,5 +14,6 @@ object Features {
         SetTableAction
         ResolveGameAction
         AddPointsAction
+        SetRoleAction
     }
 }
