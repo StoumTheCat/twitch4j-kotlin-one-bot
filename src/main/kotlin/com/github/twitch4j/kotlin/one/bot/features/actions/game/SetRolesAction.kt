@@ -15,7 +15,7 @@ object SetRolesAction : CommandWithResponseAction(
     "setroles",
     permissions = listOf(MODERATOR),
     description = "!роли - List slots starting with sherif, mark don with *",
-    response = fun(event: ChannelMessageEvent): String {
+    response = fun(event: ChannelMessageEvent): List<String> {
         TournamentInfo.resetRoles()
         val roleBySlot = event.getMessageArguments("""\s+""")
         with(TournamentInfo.getCurrentTable()) {
@@ -30,10 +30,10 @@ object SetRolesAction : CommandWithResponseAction(
         runBlocking {
             launch { Application.send("control-panel", event.message) }
         }
-        return "Roles has been recorded:\n ${
+        return listOf(
             TournamentInfo.getActiveRoles()
                 .map { "${it.currentSlot} - ${it.name} - ${it.currentRole.localized}" }.twitchList
-        }"
+        )
     }
 ) {
     init {

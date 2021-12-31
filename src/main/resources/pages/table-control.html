@@ -136,18 +136,28 @@
 </div>
 
 <script>
-    const bc = new BroadcastChannel('table-results');
-    const ad = new BroadcastChannel('additional-data');
+    const results = new BroadcastChannel('table-results');
+    const additionalData = new BroadcastChannel('additional-data');
+    const socket = new WebSocket('ws://localhost:8080/gameinfo');
+    socket.addEventListener('open', function (event) {
+        socket.send('register table-control');
+        console.log("Connected to gameinfo WS")
+    });
 
-    data = "Тарас|Sha|Ментик|Красивая|Cowboy|Фдм|Шлюба|Виктор|КАЕ|MikoChu";
-    player_list = data.split('|');
+    socket.addEventListener("message", function (event) {
+        if (event.data.toString().startsWith("!table")) {
+            let tableRows = event.data.split(/\s*\|\s*/).slice(1);
+            i = 0;
+            document.querySelectorAll('tr').forEach((element, index, array) => {
+                element.querySelectorAll('.nick')[0].innerHTML = tableRows[i++]
+                element.querySelectorAll('.point input')[0].value = tableRows[i++]
+            });
+            sendData()
+        }
+    })
 
     $(document).ready(function () {
-        i = 0;
-        document.querySelectorAll('.nick').forEach((element, index, array) => {
-            element.innerHTML = player_list[i];
-            i += 1;
-        });
+
     });
 
     function sendData() {
@@ -159,8 +169,8 @@
             player_list.push(player);
         });
         player_list.sort((a, b) => a.sum <= b.sum ? 1 : -1);
-        bc.postMessage(JSON.stringify(player_list));
-        ad.postMessage('Игра ' + document.getElementById('game_number').value + '|Финал');
+        results.postMessage(JSON.stringify(player_list));
+        additionalData.postMessage('Игра ' + document.getElementById('game_number').value + '|Финал');
     }
 </script>
 </body>

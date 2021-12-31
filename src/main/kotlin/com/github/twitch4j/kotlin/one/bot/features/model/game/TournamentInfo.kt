@@ -42,9 +42,20 @@ object TournamentInfo {
         return players.values.sortedByDescending { it.points + it.ciPoints }
     }
 
+    fun getTeamResults(): List<Pair<String, Double>> {
+        return players.values.groupBy { it.team }
+            .entries.associate { it.key to it.value.sumOf { player -> player.points + player.ciPoints } }
+            .toList().sortedByDescending { (_, points) -> points }
+    }
+
     fun getResultLines(): List<String> {
         return getResults().withIndex()
-            .map { "${it.index + 1}. ${it.value.name} - ${it.value.points + it.value.ciPoints}" }
+            .map { "${it.index + 1}. ${it.value.name}${if (it.value.team.isNotBlank()) " - " + it.value.team else ""} - ${it.value.points + it.value.ciPoints}" }
+    }
+
+    fun getTeamResultsLines(): List<String> {
+        return getTeamResults().withIndex()
+            .map { "${it.index + 1}. ${it.value.first} - ${it.value.second}" }
     }
 
     fun getActiveRoles(tableNumber: Int = 0): List<Player> {

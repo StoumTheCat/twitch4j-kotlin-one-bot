@@ -15,14 +15,16 @@ object SetTableAction : CommandWithResponseAction(
     "settable",
     permissions = listOf(MODERATOR),
     description = "!стол List players by nickname with space delimiter",
-    response = fun(event: ChannelMessageEvent): String {
+    response = fun(event: ChannelMessageEvent): List<String> {
         val players = event.getMessageArguments("""\s+""")
         //todo refactor this abominable htonь
         with(players.map { it.toLowerCase() }) {
             if (TournamentInfo.players.values.map { it.name.toLowerCase() }.diff(this).isNotEmpty()) {
-                return "Following players not found: ${
-                    TournamentInfo.players.values.map { it.name.toLowerCase() }.diff(this).twitchList
-                }"
+                return listOf(
+                    "Following players not found: ${
+                        TournamentInfo.players.values.map { it.name.toLowerCase() }.diff(this).twitchList
+                    }"
+                )
             }
 
             players.withIndex().forEach { TournamentInfo.players[it.value]?.currentSlot = it.index + 1 }
@@ -31,7 +33,7 @@ object SetTableAction : CommandWithResponseAction(
                     Application.send("control-panel", event.message)
                 }
             }
-            return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }.twitchList
+            return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }
         }
     }
 ) {
