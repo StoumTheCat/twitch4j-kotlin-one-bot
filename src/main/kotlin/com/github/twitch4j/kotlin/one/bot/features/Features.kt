@@ -2,6 +2,7 @@ package com.github.twitch4j.kotlin.one.bot.features
 
 import com.github.twitch4j.kotlin.one.bot.features.actions.AddCommandAction
 import com.github.twitch4j.kotlin.one.bot.features.actions.CommandsListAction
+import com.github.twitch4j.kotlin.one.bot.features.actions.OBSAction
 import com.github.twitch4j.kotlin.one.bot.features.actions.game.*
 
 object Features {
@@ -15,5 +16,6 @@ object Features {
         ResolveGameAction
         AddPointsAction
         SetRoleAction
+        OBSAction
     }
 }
