@@ -35,7 +35,10 @@ object TournamentInfo {
     }
 
     fun getCurrentTable(tableNumber: Int = 0): Array<Player> {
-        return players.values.filter { it.currentTable == tableNumber }.sortedBy { it.currentSlot }.toTypedArray()
+        return players.values
+            .filter { it.currentTable == tableNumber }
+            .filter { it.currentSlot != 0 }
+            .sortedBy { it.currentSlot }.toTypedArray()
     }
 
     fun getResults(): List<Player> {

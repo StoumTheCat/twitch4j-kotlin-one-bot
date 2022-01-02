@@ -394,6 +394,9 @@
     function addPlayers(players) {
         let player_list = players.toString().split(" ")
         document.querySelectorAll('.player-list').forEach((element, index, array) => {
+            element.innerHTML = ''
+            storage.clear()
+            storage.setItem("players", players)
             player_list.forEach(player => {
                 element.add(new Option(player, player));
             });
@@ -441,7 +444,6 @@
             switch (split[0]) {
                 case "!addplayers": {
                     let players = event.data.split(' ').slice(1).join(' ');
-                    storage.setItem("players", players)
                     addPlayers(players)
                     break
                 }
@@ -511,9 +513,9 @@
             element.classList.remove('sheriff');
             element.classList.add(role);
             playerNickname = element.querySelector("select option[selected]").text
-            let roles = JSON.parse(storage.getItem("rolesByNickname"))
+            /*let roles = JSON.parse(storage.getItem("rolesByNickname"))
             roles[playerNickname] = role
-            storage.setItem("rolesByNickname", JSON.stringify(roles))
+            storage.setItem("rolesByNickname", JSON.stringify(roles))*/
             if (forward) {
                 let roleForBot
                 switch (role) {

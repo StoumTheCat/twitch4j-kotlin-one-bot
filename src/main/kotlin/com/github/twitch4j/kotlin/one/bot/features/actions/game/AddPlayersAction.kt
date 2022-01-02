@@ -27,7 +27,7 @@ object AddPlayersAction : CommandWithResponseAction(
                     players.putAll(it.drop(1).associateWith { nickname -> Player(nickname, teamName) }.toMutableMap())
                 }
             runBlocking {
-                launch { Application.send("control-panel", "!addplayers ${players.keys.joinToString { " " }}") }
+                launch { Application.send("control-panel", "!addplayers ${players.keys.joinToString(" ")}") }
             }
         } else {
             val nicknames = event.getMessageArguments("""\s+""")
