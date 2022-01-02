@@ -5,6 +5,8 @@ import kotlin.math.roundToInt
 object TournamentInfo {
     var numberOfGames = 10
     var currentGame = 1
+    var redWins = 0
+    var blackWins = 0
 
     class Player(val name: String, val team: String = "") {
         var currentTable: Int = 0
@@ -61,11 +63,26 @@ object TournamentInfo {
             .map { "${it.index + 1}. ${it.value.first} - ${it.value.second}" }
     }
 
+    fun getStatsLines(): List<String> {
+        val stats = mutableListOf(
+            "Красные - ${redWins}, Черные - $blackWins",
+            "ПУ:"
+        )
+        stats.addAll(players.values.filter { it.firstDead > 0 }.map { "${it.name} - ${it.firstDead}" })
+
+        return stats
+    }
+
     fun getActiveRoles(tableNumber: Int = 0): List<Player> {
         return getCurrentTable(tableNumber).filter { it.currentRole != Role.RED }
     }
 
     fun resolveRound(winner: String, firstDead: Int, bestMove: List<Int>, table: Int = 0) {
+        if (winner == "red") {
+            redWins++
+        } else {
+            blackWins++
+        }
         with(getCurrentTable(table)[firstDead - 1]) {
             this.firstDead++
             if (this.currentRole.team.equals(Role.RED.team, ignoreCase = true)) {
