@@ -24,11 +24,12 @@ object OBSAction : CommandAction(
             "guest2" -> OBSHelper.setSceneTwoGuests()
             "showresults" -> OBSHelper.setSceneResults()
             "solo" -> OBSHelper.setSceneSolo()
+            "setsource" -> OBSHelper.updateBrowserSourceUrl(event.messageWithoutCommand)
         }
     }
 ) {
     init {
-        aliases.addAll(listOf("day", "night", "guest1", "guest2", "solo", "showresults", "game"))
+        aliases.addAll(listOf("day", "night", "guest1", "guest2", "solo", "showresults", "game", "setsource"))
     }
 
 }

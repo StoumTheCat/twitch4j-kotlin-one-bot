@@ -1,9 +1,11 @@
 package com.github.twitch4j.kotlin.one.bot.features.model.game
 
+import com.github.twitch4j.kotlin.one.bot.roundUp
+import java.math.RoundingMode
 import kotlin.math.roundToInt
 
 object TournamentInfo {
-    var numberOfGames = 10
+    var numberOfGames = 12
     var currentGame = 1
     var redWins = 0
     var blackWins = 0
@@ -20,7 +22,8 @@ object TournamentInfo {
         fun recalculateCI(gamesCount: Int) {
             val b = gamesCount.times(0.4).roundToInt()
             val ci = if (firstDead <= b) firstDead * 0.4 / b else 0.4
-            ciPoints = ci * firstDeadLoss
+
+            ciPoints = (ci * firstDeadLoss).toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
         }
 
         fun reset() {
@@ -96,13 +99,13 @@ object TournamentInfo {
                     .filter { it.currentRole.team == "BLACK" }
                     .filter { bestMove.contains(it.currentSlot) }.size
             ) {
-                2 -> this.points += 0.25
-                3 -> this.points += 0.4
+                2 -> this.points = (this.points + 0.25).roundUp()
+                3 -> this.points = (this.points + 0.4).roundUp()
             }
         }
         getCurrentTable(table).forEach { player ->
             if (player.currentRole.team.equals(winner, ignoreCase = true)) {
-                player.points++
+                player.points = (player.points + 1).roundUp()
             }
             player.reset()
         }

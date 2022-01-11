@@ -16,6 +16,15 @@ object OBSHelper {
         }
     }
 
+    fun updateBrowserSourceUrl(youtubeId: String) {
+        controller.setSourceSettings(
+            "Browser",
+            mapOf(Pair("url", "https://www.youtube.com/embed/${youtubeId}?autoplay=1"))
+        ) {
+            println(it)
+        }
+    }
+
     fun setSceneSolo() {
         controller.setCurrentScene("Solo") {}
     }

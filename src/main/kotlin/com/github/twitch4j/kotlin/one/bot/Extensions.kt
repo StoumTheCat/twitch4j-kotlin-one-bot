@@ -4,6 +4,7 @@ import com.github.twitch4j.chat.TwitchChat
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent
 import io.ktor.http.content.*
 import io.ktor.routing.*
+import java.math.RoundingMode
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -63,3 +64,5 @@ fun Route.resourcesWithoutExtension(remotePath: String, resourcesPackage: String
         resource("${remotePath}${it.fileName.withoutExtension}", "${it.parent.fileName}/${it.fileName}")
     }
 }
+
+fun Double.roundUp() = this.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()

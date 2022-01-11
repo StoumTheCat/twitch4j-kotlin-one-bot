@@ -5,6 +5,7 @@ import com.github.twitch4j.kotlin.one.bot.features.model.CommandWithResponseActi
 import com.github.twitch4j.kotlin.one.bot.features.model.game.TournamentInfo
 import com.github.twitch4j.kotlin.one.bot.features.model.permissions.PermissionLevel.MODERATOR
 import com.github.twitch4j.kotlin.one.bot.getMessageArguments
+import com.github.twitch4j.kotlin.one.bot.roundUp
 
 object AddPointsAction : CommandWithResponseAction(
     "addpoints",
@@ -14,7 +15,7 @@ object AddPointsAction : CommandWithResponseAction(
         val points = event.getMessageArguments("""\s+""").zipWithNext()
         points.forEach {
             TournamentInfo.players[it.first]?.points =
-                TournamentInfo.players[it.first]?.points?.plus(it.second.toDouble())!!
+                (TournamentInfo.players[it.first]?.points?.plus(it.second.toDouble())!!).roundUp()
         }
         return TournamentInfo.getResultLines()
     }

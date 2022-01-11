@@ -17,5 +17,6 @@ object Features {
         AddPointsAction
         SetRoleAction
         OBSAction
+        ShowStatsAction
     }
 }
