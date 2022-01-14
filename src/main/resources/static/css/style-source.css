@@ -34,6 +34,7 @@ footer {
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .3), -17px 0 15px -17px rgba(0, 0, 0, .8), 17px 0 15px -17px rgba(0, 0, 0, .8), 0 0 30px rgba(0, 0, 0, .1) inset, 0 2px 0 rgba(250, 170, 0, 1);
     transition: margin-top 1.5s, box-shadow 1.5s;
+    perspective: 30000px;
 }
 
 .speaker {
@@ -41,7 +42,7 @@ footer {
 }
 
 .player.dead {
-    margin-top: 1.5%;
+    margin-top: 0.5%;
 }
 
 .photo {
@@ -68,6 +69,65 @@ footer {
     visibility: hidden;
     opacity: 0;
     transition: visibility 1.5s, opacity 1.5s linear;
+}
+
+.visible {
+    visibility: visible !important;
+}
+
+.check {
+    height: 30px;
+    width: 30px;
+    position: absolute;
+    right: 6px;
+    visibility: hidden;
+    opacity: 1;
+    transition: visibility 1.5s, opacity 1.5s linear;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+}
+
+.check-black {
+    background-image: url("../content/icon/maf.png");
+}
+
+.check-red {
+    background-image: url("../content/icon/civ.png");
+}
+
+.check-1 {
+    top: 52px;
+}
+
+.check-2 {
+    top: 88px;
+}
+
+.check-3 {
+    top: 124px;
+}
+
+.check-text {
+    position: relative;
+    top: -21px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 25px;
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.status-text {
+    position: relative;
+    top: -40px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 40px;
+    color: white;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
 }
 
 .dead .status {
@@ -149,4 +209,74 @@ footer {
     bottom: 10px;
     color: #fff;
     font-size: 18px;
+}
+
+/* This container is needed to position the front and back side */
+.flip-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.player:hover .flip-container {
+    transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-front, .flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Safari */
+    backface-visibility: hidden;
+}
+
+
+/* Style the back side */
+.flip-back {
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.stat-table {
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    table-layout: auto;
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+    font-weight: 900;
+    font-size: 18px;
+    color: black;
+    /*    -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: rgba(0, 0, 0, 0.7);*/
+}
+
+thead tr th:first-child,
+tbody tr td:first-child {
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    word-break: break-all;
+}
+
+
+.flip-photo {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: cover;
+    box-shadow: 0px -70px 25px -40px rgba(0, 0, 0, 0.8) inset, 0px -100px 50px -40px rgba(0, 0, 0, 0.5) inset;
+    transition: all 1s;
+    /*filter: grayscale(50%);*/
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
