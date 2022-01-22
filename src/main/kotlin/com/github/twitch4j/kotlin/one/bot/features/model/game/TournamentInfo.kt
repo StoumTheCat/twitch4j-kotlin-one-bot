@@ -1,6 +1,10 @@
 package com.github.twitch4j.kotlin.one.bot.features.model.game
 
+import com.github.twitch4j.kotlin.one.bot.ktor.server.Application
 import com.github.twitch4j.kotlin.one.bot.roundUp
+import com.google.gson.Gson
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.math.RoundingMode
 import kotlin.math.roundToInt
 
@@ -18,6 +22,10 @@ object TournamentInfo {
         var firstDead: Int = 0
         var firstDeadLoss: Int = 0
         var ciPoints: Double = 0.0
+        var stat: MutableMap<String, Pair<Int, Int>> = mutableMapOf()
+        var mwtStat: MutableMap<String, String> = mutableMapOf()
+        var status: Pair<String, String>? = null
+        var checks: MutableList<Pair<String, String>> = mutableListOf()
 
         fun recalculateCI(gamesCount: Int) {
             val b = gamesCount.times(0.4).roundToInt()
@@ -30,13 +38,32 @@ object TournamentInfo {
             currentTable = 0
             currentSlot = 0
             currentRole = Role.RED
+            status = null
+            checks.clear()
+        }
+
+        fun toPlayerInfo(): GameInfo.PlayerInfo {
+            val info = GameInfo.PlayerInfo(name, currentRole.name.toLowerCase())
+            val statCurrent = this.stat.mapValues { "${it.value.first}/${it.value.second}" }
+            info.stat =
+                statCurrent.keys.associateWith { Pair(this.mwtStat[it] ?: "", statCurrent[it] ?: "") }.toMutableMap()
+            info.checks = this.checks
+            info.status = this.status
+            return info
         }
     }
 
     val players: MutableMap<String, Player> = mutableMapOf()
+    var gameInfo: GameInfo = GameInfo()
+    val gameInfoHistory: MutableList<GameInfo> = mutableListOf()
+
+    fun getPlayerBySlot(slot: Int): Player {
+        return players.values.first { it.currentSlot == slot }
+    }
 
     fun resetRoles() {
         players.values.forEach { it.currentRole = Role.RED }
+        sendGameInfo()
     }
 
     fun getCurrentTable(tableNumber: Int = 0): Array<Player> {
@@ -81,6 +108,7 @@ object TournamentInfo {
     }
 
     fun resolveRound(winner: String, firstDead: Int, bestMove: List<Int>, table: Int = 0) {
+        gameInfo.win = winner
         if (winner == "red") {
             redWins++
         } else {
@@ -104,12 +132,38 @@ object TournamentInfo {
             }
         }
         getCurrentTable(table).forEach { player ->
+            val roleStat = player.stat[player.currentRole.name.toLowerCase()]
+            val newTotal = roleStat?.second?.inc()
+            var newWin = roleStat?.first
             if (player.currentRole.team.equals(winner, ignoreCase = true)) {
                 player.points = (player.points + 1).roundUp()
+                newWin = roleStat?.first?.inc()
             }
+            player.stat[player.currentRole.name.toLowerCase()] = Pair(newWin ?: 0, newTotal ?: 0)
             player.reset()
         }
+        sendGameInfo()
+        gameInfoHistory.add(gameInfo)
+        gameInfo = GameInfo()
         currentGame++
+    }
+
+    fun updateGameInfo() {
+        gameInfo.players.clear()
+        gameInfo.players.addAll(players.values.sortedBy { it.currentSlot }.map { it.toPlayerInfo() })
+    }
+
+    fun sendGameInfo() {
+        updateGameInfo()
+        val gson = Gson()
+
+        val gameInfoString = gson.toJson(gameInfo)
+
+        runBlocking {
+            launch {
+                Application.send("overlay", "!gameinfo $gameInfoString")
+            }
+        }
     }
 
 }

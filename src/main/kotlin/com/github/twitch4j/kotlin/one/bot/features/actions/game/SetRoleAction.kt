@@ -22,12 +22,12 @@ object SetRoleAction : CommandAction(
         roles.forEach { (name, role) ->
             TournamentInfo.players[name]?.currentRole = when (role) {
                 "маф" -> Role.BLACK
-                "дон" -> Role.HAT
-                "шер" -> Role.STAR
+                "дон" -> Role.DON
+                "шер" -> Role.SHER
                 else -> Role.RED
             }
         }
-
+        TournamentInfo.sendGameInfo()
         if (TournamentInfo.getActiveRoles().size == 4) {
             twitchChat.sendMessage(event.channel.name, TournamentInfo.getActiveRoles()
                 .map { "${it.currentSlot} - ${it.name} - ${it.currentRole.localized}" }.twitchList

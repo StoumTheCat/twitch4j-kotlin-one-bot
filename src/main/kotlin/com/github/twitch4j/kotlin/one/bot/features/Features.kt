@@ -18,5 +18,8 @@ object Features {
         SetRoleAction
         OBSAction
         ShowStatsAction
+        SetStatAction
+        AddCheckAction
+        SetPlayerStatusAction
     }
 }

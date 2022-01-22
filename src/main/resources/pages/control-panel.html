@@ -409,9 +409,9 @@
             element.querySelectorAll(`option`).forEach(element => {
                 element.removeAttribute("selected")
             })
-            element.querySelector(`[value=${player_list[index]}]`).setAttribute("selected", "selected")
+            element.querySelector(`[value="${player_list[index]}"]`).setAttribute("selected", "selected")
         });
-        sendAllData()
+        //sendAllData()
     }
 
     function setRoles(roles) {
@@ -579,12 +579,12 @@
         document.querySelectorAll('.mafia').forEach((item, index, array) => {
             item.classList.remove('mafia');
         });
-        document.querySelectorAll('.sheriff').forEach((item, index, array) => {
+        document.querySelectorAll('.sher').forEach((item, index, array) => {
             item.classList.remove('sheriff');
         });
         document.querySelectorAll('.player').forEach((element, index, array) => {
             player = element.id + '|' + element.classList.value;
-            playerStatusChannel.postMessage(player);
+            //playerStatusChannel.postMessage(player);
         });
 
         socket.send("!setrole reset")
@@ -592,9 +592,9 @@
 
     $('#button-panel').click(function () {
         if ($('#button-panel').find('.checkbox')[0].checked) {
-            panelStatusChannel.postMessage('body|visible');
+            //panelStatusChannel.postMessage('body|visible');
         } else {
-            panelStatusChannel.postMessage('body|');
+            //panelStatusChannel.postMessage('body|');
         }
 
     });
@@ -602,9 +602,9 @@
 
     $('#button-roles').click(function () {
         if ($('#button-roles').find('.checkbox')[0].checked) {
-            panelStatusChannel.postMessage('footer|show-roles');
+            //panelStatusChannel.postMessage('footer|show-roles');
         } else {
-            panelStatusChannel.postMessage('footer|');
+            //panelStatusChannel.postMessage('footer|');
         }
 
     });

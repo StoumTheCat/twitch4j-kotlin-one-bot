@@ -73,6 +73,7 @@ footer {
 
 .visible {
     visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .check {
@@ -81,18 +82,18 @@ footer {
     position: absolute;
     right: 6px;
     visibility: hidden;
-    opacity: 1;
+    opacity: 0;
     transition: visibility 1.5s, opacity 1.5s linear;
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
 }
 
-.check-black {
+.check.black {
     background-image: url("../content/icon/maf.png");
 }
 
-.check-red {
+.check.red {
     background-image: url("../content/icon/civ.png");
 }
 
@@ -162,26 +163,26 @@ footer {
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
-    visibility: hidden;
+    visibility: visible;
     opacity: 0;
     transition: visibility 1.5s, opacity 1.5s linear;
 }
 
-.show-roles .sheriff .role {
+.sher .role {
     visibility: visible;
     opacity: 1;
     background-color: rgba(250, 170, 0, 0.8);
     background-image: url("../content/icon/loupe.png");
 }
 
-.show-roles .don .role {
+.don .role {
     visibility: visible;
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.8);
     background-image: url("../content/icon/hat.png");
 }
 
-.show-roles .mafia .role {
+.black .role {
     visibility: visible;
     opacity: 1;
     background-color: rgba(0, 0, 0, 0.8);

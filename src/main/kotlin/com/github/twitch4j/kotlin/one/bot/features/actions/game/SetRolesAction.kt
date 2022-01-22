@@ -19,10 +19,10 @@ object SetRolesAction : CommandWithResponseAction(
         TournamentInfo.resetRoles()
         val roleBySlot = event.getMessageArguments("""\s+""")
         with(TournamentInfo.getCurrentTable()) {
-            this[roleBySlot[0].toInt() - 1].currentRole = Role.STAR
+            this[roleBySlot[0].toInt() - 1].currentRole = Role.SHER
             roleBySlot.drop(1).forEach {
                 if (it.startsWith("*"))
-                    this[it.drop(1).toInt() - 1].currentRole = Role.HAT
+                    this[it.drop(1).toInt() - 1].currentRole = Role.DON
                 else
                     this[it.toInt() - 1].currentRole = Role.BLACK
             }
@@ -30,6 +30,7 @@ object SetRolesAction : CommandWithResponseAction(
         runBlocking {
             launch { Application.send("control-panel", event.message) }
         }
+        TournamentInfo.sendGameInfo()
         return listOf(
             TournamentInfo.getActiveRoles()
                 .map { "${it.currentSlot} - ${it.name} - ${it.currentRole.localized}" }.twitchList

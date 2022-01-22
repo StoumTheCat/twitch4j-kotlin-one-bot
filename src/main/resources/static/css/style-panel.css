@@ -99,7 +99,7 @@ body {
 .deleted .s-button.deleted-button div,
 .don .s-button.don-button div,
 .mafia .s-button.mafia-button div,
-.sheriff .s-button.sheriff-button div {
+.sher .s-button.sheriff-button div {
     background-color: rgba(250, 170, 0, 1);
 }
 

@@ -14,10 +14,10 @@
         <div class="flip-container">
             <div class="flip-front">
                 <div class="photo"></div>
-                <div class="status"><p class="status-text">2</p></div>
-                <div class="check check-1"><p class="check-text">1</p></div>
-                <div class="check check-2"><p class="check-text">2</p></div>
-                <div class="check check-3"><p class="check-text">3</p></div>
+                <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">1</div>
                 <div class="nick"></div>
@@ -107,6 +107,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">2</div>
                 <div class="nick"></div>
@@ -196,6 +199,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">3</div>
                 <div class="nick"></div>
@@ -285,6 +291,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">4</div>
                 <div class="nick"></div>
@@ -374,6 +383,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">5</div>
                 <div class="nick"></div>
@@ -463,6 +475,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">6</div>
                 <div class="nick"></div>
@@ -552,6 +567,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">7</div>
                 <div class="nick"></div>
@@ -641,6 +659,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">8</div>
                 <div class="nick"></div>
@@ -730,6 +751,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">9</div>
                 <div class="nick"></div>
@@ -819,6 +843,9 @@
             <div class="flip-front">
                 <div class="photo"></div>
                 <div class="status"><p class="status-text"></p></div>
+                <div class="check check-1"><p class="check-text"></p></div>
+                <div class="check check-2"><p class="check-text"></p></div>
+                <div class="check check-3"><p class="check-text"></p></div>
                 <div class="role"></div>
                 <div class="number">10</div>
                 <div class="nick"></div>
@@ -906,32 +933,87 @@
 </footer>
 
 <script>
-    const ps = new BroadcastChannel('panel_status');
-    const pl = new BroadcastChannel('player_list');
-    const cl = new BroadcastChannel('class_list');
+    /*
+        const ps = new BroadcastChannel('panel_status');
+        const pl = new BroadcastChannel('player_list');
+        const cl = new BroadcastChannel('class_list');
+    */
+
+    const socket = new WebSocket('ws://localhost:8080/gameinfo');
+
+    socket.addEventListener('open', function (event) {
+        socket.send('register overlay');
+        console.log("Connected to gameinfo WS")
+    });
+
+    socket.addEventListener("message", function (event) {
+        console.log('Message from server ', event.data);
+        if (event.data.toString().startsWith("!")) {
+            let split = event.data.toString().split(" ")
+            switch (split[0]) {
+                case "!gameinfo": {
+                    parseGameInfo(split[1])
+                }
+            }
+        }
+    });
+
+    function parseGameInfo(gameInfoString) {
+        gameInfo = JSON.parse(gameInfoString)
+        players = gameInfo.players
+
+        players.forEach((playerInfo, index) => {
+            playerElement = document.getElementById(`player_${index + 1}`);
+            playerElement.querySelector('.nick').innerHTML = playerInfo.nickname;
+            playerElement.querySelectorAll('.photo, .flip-photo').forEach((el) => {
+                    el.style.backgroundImage = `url("content/photo/${playerInfo.nickname}.png")`
+                }
+            );
+            //todo set status
+            if (playerInfo.status) {
+                playerElement.classList.add('dead', playerInfo.status.first)
+                playerElement.querySelector('.status-text').innerHTML = playerInfo.status.second
+            }
+            //todo set role
+            if (playerInfo.role) {
+                playerElement.classList.add(playerInfo.role)
+            }
+            //todo set checks
+            if (playerInfo.checks) {
+                playerInfo.checks.forEach((check, index) => {
+                    checkElement = playerElement.querySelector(`.check-${index + 1}`);
+                    checkElement.classList.add(check.first, 'visible')
+                    checkElement.querySelector('.check-text').innerHTML = check.second
+                })
+            }
+            //todo add stats
+        })
+    }
 
 
     $(document).ready(function () {
         var element = document.getElementsByTagName("body")[0];
     });
 
-    pl.onmessage = (event) => {
-        player_list = event.data.split('|');
-        document.getElementById(player_list[0]).querySelectorAll('.nick')[0].innerHTML = player_list[1];
-        document.getElementById(player_list[0]).querySelectorAll('.photo, .flip-photo').forEach((el) => {
-                el.style.backgroundImage = 'url("content/photo/' + player_list[1] + '.png")'
-            }
-        );
-    }
-    cl.onmessage = (event) => {
-        class_list = event.data.split('|');
-        document.getElementById(class_list[0]).setAttribute('class', class_list[1]);
-    }
+    /*
+        pl.onmessage = (event) => {
+            player_list = event.data.split('|');
+            document.getElementById(player_list[0]).querySelectorAll('.nick')[0].innerHTML = player_list[1];
+            document.getElementById(player_list[0]).querySelectorAll('.photo, .flip-photo').forEach((el) => {
+                    el.style.backgroundImage = 'url("content/photo/' + player_list[1] + '.png")'
+                }
+            );
+        }
+        cl.onmessage = (event) => {
+            class_list = event.data.split('|');
+            document.getElementById(class_list[0]).setAttribute('class', class_list[1]);
+        }
 
-    ps.onmessage = (event) => {
-        panel_status = event.data.split('|');
-        document.getElementsByTagName(panel_status[0])[0].setAttribute('class', panel_status[1]);
-    }
+        ps.onmessage = (event) => {
+            panel_status = event.data.split('|');
+            document.getElementsByTagName(panel_status[0])[0].setAttribute('class', panel_status[1]);
+        }
+    */
 </script>
 </body>
 

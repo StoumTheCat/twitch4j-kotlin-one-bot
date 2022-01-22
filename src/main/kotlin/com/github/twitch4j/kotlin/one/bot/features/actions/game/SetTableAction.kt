@@ -33,6 +33,7 @@ object SetTableAction : CommandWithResponseAction(
                     Application.send("control-panel", event.message)
                 }
             }
+            TournamentInfo.sendGameInfo()
             return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }
         }
     }
