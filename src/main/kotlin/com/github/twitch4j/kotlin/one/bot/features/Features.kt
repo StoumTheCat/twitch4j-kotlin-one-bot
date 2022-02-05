@@ -7,18 +7,18 @@ import com.github.twitch4j.kotlin.one.bot.features.actions.game.*
 
 object Features {
     init {
-        CommandsListAction
-        AddCommandAction
+        //CommandsListAction
+        //AddCommandAction
         AddPlayersAction
-        ShowResultsAction
+        //ShowResultsAction
         SetRolesAction
         SetTableAction
         ResolveGameAction
         AddPointsAction
         SetRoleAction
         OBSAction
-        ShowStatsAction
-        SetStatAction
+        //ShowStatsAction
+        //SetStatAction
         AddCheckAction
         SetPlayerStatusAction
     }

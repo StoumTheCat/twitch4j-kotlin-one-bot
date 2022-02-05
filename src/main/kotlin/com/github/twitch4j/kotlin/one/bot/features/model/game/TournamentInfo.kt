@@ -46,7 +46,7 @@ object TournamentInfo {
             val info = GameInfo.PlayerInfo(name, currentRole.name.toLowerCase())
             val statCurrent = this.stat.mapValues { "${it.value.first}/${it.value.second}" }
             info.stat =
-                statCurrent.keys.associateWith { Pair(this.mwtStat[it] ?: "", statCurrent[it] ?: "") }.toMutableMap()
+                setOf("red", "black", "don", "sher").associateWith { Pair(this.mwtStat[it] ?: "", statCurrent[it] ?: "") }.toMutableMap()
             info.checks = this.checks
             info.status = this.status
             return info
@@ -59,6 +59,10 @@ object TournamentInfo {
 
     fun getPlayerBySlot(slot: Int): Player {
         return players.values.first { it.currentSlot == slot }
+    }
+
+    fun resetPlayers() {
+        players.values.forEach { it.reset() }
     }
 
     fun resetRoles() {
@@ -150,7 +154,7 @@ object TournamentInfo {
 
     fun updateGameInfo() {
         gameInfo.players.clear()
-        gameInfo.players.addAll(players.values.sortedBy { it.currentSlot }.map { it.toPlayerInfo() })
+        gameInfo.players.addAll(players.values.filter { it.currentSlot != 0 }.sortedBy { it.currentSlot }.map { it.toPlayerInfo() })
     }
 
     fun sendGameInfo() {

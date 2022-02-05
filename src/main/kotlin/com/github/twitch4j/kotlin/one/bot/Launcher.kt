@@ -7,7 +7,8 @@ import kotlin.concurrent.thread
 
 
 fun main() {
-    OBSHelper
+    //OBSHelper
+    PlayerLoader.loadWithStats("")
     runBlocking {
         thread {
             Bot.registerFeatures()

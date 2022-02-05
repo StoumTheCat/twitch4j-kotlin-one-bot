@@ -395,8 +395,6 @@
         let player_list = players.toString().split(" ")
         document.querySelectorAll('.player-list').forEach((element, index, array) => {
             element.innerHTML = ''
-            storage.clear()
-            storage.setItem("players", players)
             player_list.forEach(player => {
                 element.add(new Option(player, player));
             });
@@ -431,8 +429,6 @@
 
     const storage = window.localStorage
     const socket = new WebSocket('ws://localhost:8080/gameinfo');
-    let rolesByNickname = {}
-    storage.setItem("rolesByNickname", JSON.stringify(rolesByNickname))
     socket.addEventListener('open', function (event) {
         socket.send('register control-panel');
         console.log("Connected to gameinfo WS")
@@ -449,14 +445,12 @@
                 }
                 case "!settable": {
                     let playersOrdered = event.data.split(' ').slice(1).join(' ');
-                    storage.setItem("table", playersOrdered)
                     setTable(playersOrdered)
                     break
                 }
                 case "!setroles": {
                     clearRole()
                     let roles = event.data.split(' ').slice(1).join(" ");
-                    storage.setItem("roles", roles)
                     setRoles(roles)
                 }
             }
@@ -468,12 +462,7 @@
     const playerStatusChannel = new BroadcastChannel('class_list');
 
     $(document).ready(function () {
-        let players = storage.getItem("players")
-        let table = storage.getItem("table")
-        let roles = storage.getItem("roles")
-        if (players) addPlayers(players)
-        if (table) setTable(table)
-        if (roles) setRoles(roles)
+
     });
 
     function changeStatus(object, status) {
@@ -500,9 +489,6 @@
         if (element.classList.contains(role)) {
             element.classList.remove(role);
             playerNickname = element.querySelector("select option[selected]").text
-            let roles = JSON.parse(storage.getItem("rolesByNickname"))
-            roles.delete(playerNickname)
-            storage.setItem("rolesByNickname", JSON.stringify(roles))
             if (forward) {
                 let roleForBot = "мир"
                 socket.send(`!setrole ${playerNickname} ${roleForBot}`)

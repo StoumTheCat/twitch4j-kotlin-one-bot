@@ -16,6 +16,7 @@ object SetTableAction : CommandWithResponseAction(
     permissions = listOf(MODERATOR),
     description = "!стол List players by nickname with space delimiter",
     response = fun(event: ChannelMessageEvent): List<String> {
+        TournamentInfo.resetPlayers()
         val players = event.getMessageArguments("""\s+""")
         //todo refactor this abominable htonь
         with(players.map { it.toLowerCase() }) {
@@ -34,7 +35,8 @@ object SetTableAction : CommandWithResponseAction(
                 }
             }
             TournamentInfo.sendGameInfo()
-            return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }
+            return listOf("Table has been set")
+            //return TournamentInfo.getCurrentTable().map { "${it.currentSlot} - ${it.name}" }
         }
     }
 ) {

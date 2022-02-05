@@ -87,14 +87,16 @@ footer {
     background-repeat: no-repeat;
     background-position: top;
     background-size: cover;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .check.black {
-    background-image: url("../content/icon/maf.png");
+    background-image: url("../content/icon/mafia.png");
 }
 
 .check.red {
-    background-image: url("../content/icon/civ.png");
+    background-image: url("../content/icon/red.png");
 }
 
 .check-1 {
@@ -111,13 +113,14 @@ footer {
 
 .check-text {
     position: relative;
-    top: -21px;
+    top: -15px;
     text-align: center;
     font-weight: 900;
-    font-size: 25px;
+    font-size: 20px;
     color: white;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
+    text-shadow: 0px 0px 5px #000000;
+    /*-webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;*/
 }
 
 .status-text {
@@ -127,8 +130,9 @@ footer {
     font-weight: 900;
     font-size: 40px;
     color: white;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: black;
+    text-shadow: 0px 0px 5px #000000;
+    /*-webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;*/
 }
 
 .dead .status {
