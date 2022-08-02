@@ -1,40 +1,41 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '2.0.2'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.31'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0'
+    id 'application'
+    id 'java'
 }
 
 repositories {
-    jcenter()
+    //jcenter()
     mavenCentral()
 }
 
 dependencies {
 
     // Kotlin
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // Twitch4J
-    compile "com.github.twitch4j:twitch4j:1.1.3"
+    implementation "com.github.twitch4j:twitch4j:1.10.0"
 
     // YAML Parser
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.0"
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.13.3'
 
     // Logging
-    compile 'ch.qos.logback:logback-classic:1.2.9'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
 
     //Ktor
-    compile "io.ktor:ktor-server-core:1.6.7"
-    compile "io.ktor:ktor-server-netty:1.6.7"
+    implementation 'io.ktor:ktor-server-core:2.0.2'
+    implementation 'io.ktor:ktor-server-netty:2.0.2'
 
-    implementation "io.ktor:ktor-websockets:1.6.7"
-    implementation "io.ktor:ktor-client-websockets:1.6.7"
-    implementation "io.ktor:ktor-client-cio:1.6.7"
+    implementation 'io.ktor:ktor-server-websockets:2.0.2'
+    implementation 'io.ktor:ktor-client-websockets:2.0.2'
+    implementation 'io.ktor:ktor-client-cio:2.0.2'
 
     implementation 'net.twasi:obs-websocket-java:1.2.0'
 
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.9.0'
 
-    implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:1.2.0' //for JVM platform
+    implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:1.3.0' //for JVM platform
 }
 
 compileKotlin {
@@ -45,3 +46,18 @@ compileKotlin {
 }
 
 compileTestKotlin { kotlinOptions.jvmTarget = "1.8" }
+
+application {
+    mainClass = 'com.one.bot.LauncherKt'
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes('Main-Class': 'com.one.bot.LauncherKt')
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
