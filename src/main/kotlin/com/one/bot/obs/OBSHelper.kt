@@ -18,7 +18,7 @@ object OBSHelper {
 
     fun updateBrowserSourceUrl(youtubeId: String) {
         controller.setSourceSettings(
-            "Browser",
+            "GameSource",
             mapOf(Pair("url", "https://www.youtube.com/embed/${youtubeId}?autoplay=1"))
         ) {
             println(it)

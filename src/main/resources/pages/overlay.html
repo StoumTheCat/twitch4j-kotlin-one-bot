@@ -973,18 +973,33 @@
             if (playerInfo.status) {
                 playerElement.classList.add('dead', playerInfo.status.first)
                 playerElement.querySelector('.status-text').innerHTML = playerInfo.status.second
+            } else {
+                playerElement.classList.remove('dead')
+                playerElement.classList.remove('killed')
+                playerElement.classList.remove('voted')
+                playerElement.classList.remove('removed')
             }
             //todo set role
-            if (playerInfo.role) {
+            if (playerInfo.role !== 'red') {
                 playerElement.classList.add(playerInfo.role)
+            } else {
+                playerElement.classList.remove('don')
+                playerElement.classList.remove('black')
+                playerElement.classList.remove('sher')
             }
             //todo set checks
-            if (playerInfo.checks) {
+            if (playerInfo.checks.length !== 0) {
                 playerInfo.checks.forEach((check, index) => {
                     checkElement = playerElement.querySelector(`.check-${index + 1}`);
                     checkElement.classList.add(check.first, 'visible')
                     checkElement.querySelector('.check-text').innerHTML = check.second
                 })
+            } else {
+                playerElement.querySelectorAll('.check').forEach((el) => {
+                        el.classList.remove('visible')
+                        el.querySelector('.check-text').innerHTML = ''
+                    }
+                );
             }
             //todo add stats
             if (playerInfo.stat) {
