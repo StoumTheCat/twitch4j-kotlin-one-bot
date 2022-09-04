@@ -997,6 +997,8 @@
             } else {
                 playerElement.querySelectorAll('.check').forEach((el) => {
                         el.classList.remove('visible')
+                        el.classList.remove('red')
+                        el.classList.remove('black')
                         el.querySelector('.check-text').innerHTML = ''
                     }
                 );
