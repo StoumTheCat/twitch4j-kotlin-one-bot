@@ -958,6 +958,23 @@
         }
     });
 
+    function checkImage(url) {
+        var request = new XMLHttpRequest();
+        request.open("GET", url, false);
+        try {
+            request.send()
+            if (request.status === 200) {
+                return true
+            } else {
+                return false
+            }
+        } catch (e) {
+            return false
+        }
+
+
+    }
+
     function parseGameInfo(gameInfoString) {
         gameInfo = JSON.parse(gameInfoString)
         players = gameInfo.players
@@ -966,7 +983,17 @@
             playerElement = document.getElementById(`player_${index + 1}`);
             playerElement.querySelector('.nick').innerHTML = playerInfo.nickname;
             playerElement.querySelectorAll('.photo, .flip-photo').forEach((el) => {
-                    el.style.backgroundImage = `url("content/photo/${playerInfo.nickname}.png")`
+                    let imageUrl = `/content/photo/${playerInfo.nickname}.png`
+                    if (checkImage(imageUrl)) {
+                        el.style.backgroundImage = `url("${imageUrl}")`
+                    } else {
+                        imageUrl = `/content/photo/${playerInfo.nickname}.jpg`
+                        if (checkImage(imageUrl)) {
+                            el.style.backgroundImage = `url("${imageUrl}")`
+                        } else {
+                            el.style.backgroundImage = `url("content/photo/placeholder.png")`
+                        }
+                    }
                 }
             );
             //todo set status
