@@ -10,11 +10,23 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.streams.toList
 
-val twitchListDelimiter: String = "⠤".repeat(30)
+val twitchListDelimiter: String = ""//""⠤".repeat(30)
 const val twitchMessageLimit = 500
 
 val String.withTwitchDelimiter: String
     get() = this.plus(" $twitchListDelimiter")
+
+val String.extractBestMove: IntArray
+    get() {
+        val exp = """(10|[0-9]),?\s?(10|[0-9]),?\s?(10|[0-9])""".toRegex()
+        val bm = exp.matchEntire(this)!!.groupValues
+            .drop(1)
+            .map { it.toInt() }
+            .map { if (it == 0) 10 else it }
+            .toIntArray()
+
+        return bm
+    }
 
 val <T> Iterable<T>.twitchList: String
     get() {

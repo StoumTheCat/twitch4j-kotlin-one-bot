@@ -7,7 +7,9 @@ import com.one.bot.Twitch.eventHandler
 abstract class AbstractChatAction(override val description: String) : ChatAction {
     private val disposable: IDisposable
     init {
-        disposable = eventHandler.onEvent(ChannelMessageEvent::class.java) { this.onChannelMessage(it) }
+        disposable = eventHandler.onEvent(ChannelMessageEvent::class.java) {
+            this.onChannelMessage(it)
+        }
     }
 
     override var enabled: Boolean = true

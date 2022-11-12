@@ -11,8 +11,8 @@ fun main() {
     //PlayerLoader.loadWithStats("")
     runBlocking {
         thread {
-            Bot.registerFeatures()
             Bot.start()
+            Bot.registerFeatures()
         }
         thread { Application.main() }
         //thread { launch { WebsocketClient.launchWsClient() } }

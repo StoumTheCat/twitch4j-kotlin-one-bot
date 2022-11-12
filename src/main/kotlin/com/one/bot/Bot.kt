@@ -28,6 +28,8 @@ object Bot {
         for (channel in com.one.bot.Bot.configuration.channels) {
             com.one.bot.Bot.twitchClient.chat.joinChannel(channel)
         }
+
+        twitchClient.clientHelper.enableStreamEventListener(configuration.channels)
     }
 
     /** Load the configuration from the config.yaml file */
