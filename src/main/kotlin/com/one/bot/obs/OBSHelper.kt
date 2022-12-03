@@ -1,47 +1,60 @@
 package com.one.bot.obs
 
-import net.twasi.obsremotejava.OBSRemoteController
-import net.twasi.obsremotejava.requests.SetCurrentScene.SetCurrentSceneResponse
+import com.google.gson.JsonObject
+import com.google.gson.JsonPrimitive
+import io.obswebsocket.community.client.OBSRemoteController
 
 object OBSHelper {
-    val controller = OBSRemoteController("ws://localhost:4444", false)
+    val controller = OBSRemoteController.builder()
+        .host("localhost")                  // Default host
+        .port(4455)                         // Default port
+        .connectionTimeout(3)               // Seconds the client will wait for OBS to respond
+        .build();
+
+    init {
+        controller.connect()
+    }
 
     fun switchDayNight() {
-        controller.getCurrentScene {
-            if (it.name == "Night") {
-                controller.setCurrentScene("Day") {}
+        controller.getCurrentPreviewScene {
+            if (it.currentPreviewSceneName == "Night") {
+                controller.setCurrentProgramScene("Day") {}
             } else {
-                controller.setCurrentScene("Night") {}
+                controller.setCurrentProgramScene("Night") {}
             }
         }
     }
 
     fun updateBrowserSourceUrl(youtubeId: String) {
-        controller.setSourceSettings(
+        val settings = JsonObject()
+
+        settings.add("url", JsonPrimitive("https://www.youtube.com/embed/${youtubeId}?autoplay=1"))
+        controller.setInputSettings(
             "GameSource",
-            mapOf(Pair("url", "https://www.youtube.com/embed/${youtubeId}?autoplay=1"))
+            settings,
+            true
         ) {
             println(it)
         }
     }
 
     fun setSceneSolo() {
-        controller.setCurrentScene("Solo") {}
+        controller.setCurrentProgramScene("Solo") {}
     }
 
     fun setSceneOneGuest() {
-        controller.setCurrentScene("With 1 Guest") {}
+        controller.setCurrentProgramScene("With 1 Guest") {}
     }
 
     fun setSceneTwoGuests() {
-        controller.setCurrentScene("With 2 Guests") {}
+        controller.setCurrentProgramScene("With 2 Guests") {}
     }
 
     fun setSceneResults() {
-        controller.setCurrentScene("Results") {}
+        controller.setCurrentProgramScene("Results") {}
     }
 
-    fun setScene(scene: String, callback: (SetCurrentSceneResponse) -> Unit) {
+    /*fun setScene(scene: String, callback: (SetCurrentSceneResponse) -> Unit) {
         controller.setCurrentScene(scene, callback)
-    }
+    }*/
 }

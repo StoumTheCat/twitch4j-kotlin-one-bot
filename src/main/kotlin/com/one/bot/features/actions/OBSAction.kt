@@ -14,11 +14,11 @@ object OBSAction : CommandAction(
     permissions = listOf(PermissionLevel.MODERATOR),
     executable = fun(event: ChannelMessageEvent) {
         when (event.command) {
-            "obs" -> OBSHelper.setScene(event.messageWithoutCommand) {
+            /*"obs" -> OBSHelper.setScene(event.messageWithoutCommand) {
                 if (it.error.isNotBlank()) {
                     twitchChat.sendMessage(event.channel.name, it.error)
                 }
-            }
+            }*/
             "day", "night", "game" -> OBSHelper.switchDayNight()
             "guest1" -> OBSHelper.setSceneOneGuest()
             "guest2" -> OBSHelper.setSceneTwoGuests()
